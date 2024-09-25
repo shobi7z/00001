@@ -12,29 +12,25 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: linear-gradient(to right, #eef2f3, #8e9eab);
       margin: 0;
+      background: linear-gradient(to right, #f0f4f8, #d9e3f0);
     }
 
     .container {
       background-color: #ffffff;
       padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      width: 600px;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 600px;
       text-align: right;
-      transition: transform 0.3s;
-    }
-
-    .container:hover {
-      transform: scale(1.02);
     }
 
     h2 {
       text-align: center;
       color: #333;
-      margin-bottom: 20px;
-      font-weight: bold;
+      margin-bottom: 25px;
+      font-size: 24px;
     }
 
     label {
@@ -45,27 +41,19 @@
       color: #555;
     }
 
-    .student-inputs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: space-between;
-    }
-
-    input {
-      flex: 1 0 48%; /* تحديد عرض الحقل ليكون 48% */
+    select, input {
+      width: 100%;
       padding: 12px;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 8px;
+      margin-bottom: 15px;
       transition: border-color 0.3s;
       font-size: 16px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    input:focus {
+    select:focus, input:focus {
       border-color: #007bff;
       outline: none;
-      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
 
     button {
@@ -74,20 +62,19 @@
       background-color: #007bff;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 18px;
       transition: background-color 0.3s, transform 0.2s;
-      margin-top: 20px;
     }
 
     button:hover {
       background-color: #0056b3;
-      transform: translateY(-2px);
+      transform: scale(1.02);
     }
 
     /* تصميم رسالة التأكيد */
-    #confirmationDialog {
+    #confirmationDialog, #errorDialog {
       display: none;
       position: fixed;
       left: 0;
@@ -99,29 +86,28 @@
       align-items: center;
     }
 
-    #confirmationDialog .dialog {
-      background-color: #ffffff;
+    #confirmationDialog .dialog, #errorDialog .dialog {
+      background-color: white;
       padding: 30px;
       border-radius: 10px;
       text-align: center;
       width: 350px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
 
-    #confirmationDialog .dialog p {
+    #confirmationDialog .dialog p, #errorDialog .dialog p {
       margin: 15px 0;
       font-weight: bold;
       color: #333;
     }
 
-    #confirmationDialog .dialog button {
+    #confirmationDialog .dialog button, #errorDialog .dialog button {
       margin: 10px;
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s;
-      font-size: 16px;
+      transition: background-color 0.3s, transform 0.2s;
     }
 
     #confirmationDialog .dialog button.confirm {
@@ -131,6 +117,7 @@
 
     #confirmationDialog .dialog button.confirm:hover {
       background-color: #218838;
+      transform: scale(1.05);
     }
 
     #confirmationDialog .dialog button.cancel {
@@ -140,8 +127,23 @@
 
     #confirmationDialog .dialog button.cancel:hover {
       background-color: #c82333;
+      transform: scale(1.05);
     }
 
+    #errorDialog .dialog {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+    }
+
+    #errorDialog .dialog button {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    #errorDialog .dialog button:hover {
+      background-color: #c82333;
+    }
   </style>
 </head>
 <body>
@@ -150,23 +152,23 @@
   <h2>مجموعة البحث</h2>
   <form id="form">
     <label for="studyType">نوع الدراسة</label>
-    <select id="studyType" name="studyType" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
+    <select id="studyType" name="studyType">
       <option value="صباحي">صباحي</option>
       <option value="مسائي">مسائي</option>
     </select>
 
-    <label>أسماء الطلبة الرباعية</label>
+    <label>أسماء الطلبة</label>
     <div class="student-inputs">
-      <input type="text" id="student1" name="student1" placeholder="اسم الطالب الرباعي 1">
-      <input type="text" id="student2" name="student2" placeholder="اسم الطالب الرباعي 2">
-      <input type="text" id="student3" name="student3" placeholder="اسم الطالب الرباعي 3">
-      <input type="text" id="student4" name="student4" placeholder="اسم الطالب الرباعي 4">
-      <input type="text" id="student5" name="student5" placeholder="اسم الطالب الرباعي 5">
-      <input type="text" id="student6" name="student6" placeholder="اسم الطالب الرباعي 6">
-      <input type="text" id="student7" name="student7" placeholder="اسم الطالب الرباعي 7">
-      <input type="text" id="student8" name="student8" placeholder="اسم الطالب الرباعي 8">
-      <input type="text" id="student9" name="student9" placeholder="اسم الطالب الرباعي 9">
-      <input type="text" id="student10" name="student10" placeholder="اسم الطالب الرباعي 10">
+      <input type="text" id="student1" name="student1" placeholder="اسم الطالب 1" required>
+      <input type="text" id="student2" name="student2" placeholder="اسم الطالب 2" required>
+      <input type="text" id="student3" name="student3" placeholder="اسم الطالب 3">
+      <input type="text" id="student4" name="student4" placeholder="اسم الطالب 4">
+      <input type="text" id="student5" name="student5" placeholder="اسم الطالب 5">
+      <input type="text" id="student6" name="student6" placeholder="اسم الطالب 6">
+      <input type="text" id="student7" name="student7" placeholder="اسم الطالب 7">
+      <input type="text" id="student8" name="student8" placeholder="اسم الطالب 8">
+      <input type="text" id="student9" name="student9" placeholder="اسم الطالب 9">
+      <input type="text" id="student10" name="student10" placeholder="اسم الطالب 10">
     </div>
 
     <button type="button" onclick="showConfirmation()">إرسال الاستمارة</button>
@@ -182,6 +184,14 @@
   </div>
 </div>
 
+<!-- رسالة الخطأ -->
+<div id="errorDialog">
+  <div class="dialog">
+    <p>يجب إدخال اسمين على الأقل.</p>
+    <button onclick="closeError()">إغلاق</button>
+  </div>
+</div>
+
 <script>
   function showConfirmation() {
     document.getElementById('confirmationDialog').style.display = 'flex';
@@ -189,6 +199,10 @@
 
   function closeConfirmation() {
     document.getElementById('confirmationDialog').style.display = 'none';
+  }
+
+  function closeError() {
+    document.getElementById('errorDialog').style.display = 'none';
   }
 
   function submitForm() {
@@ -202,6 +216,13 @@
       if (studentName) {
         studentsArray.push(studentName);
       }
+    }
+
+    // تحقق من عدد الأسماء المدخلة
+    if (studentsArray.length < 2) {
+      // عرض رسالة الخطأ بدلاً من alert
+      document.getElementById('errorDialog').style.display = 'flex';
+      return;
     }
 
     // تحويل مصفوفة الأسماء إلى سلسلة نصية مفصولة بفواصل
