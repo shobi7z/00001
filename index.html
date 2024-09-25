@@ -73,7 +73,6 @@
       transform: scale(1.02);
     }
 
-    /* تصميم رسالة التأكيد */
     #confirmationDialog, #errorDialog {
       display: none;
       position: fixed;
@@ -175,7 +174,6 @@
   </form>
 </div>
 
-<!-- رسالة التأكيد -->
 <div id="confirmationDialog">
   <div class="dialog">
     <p>ملاحظة: لا يمكنك تغيير هذه المجموعة. هل أنت متأكد من الإرسال؟</p>
@@ -184,7 +182,6 @@
   </div>
 </div>
 
-<!-- رسالة الخطأ -->
 <div id="errorDialog">
   <div class="dialog">
     <p>يجب إدخال اسمين على الأقل.</p>
@@ -209,7 +206,6 @@
     const form = document.getElementById("form");
     const formData = new FormData(form);
     
-    // جمع أسماء الطلبة في مصفوفة
     let studentsArray = [];
     for (let i = 1; i <= 10; i++) {
       const studentName = formData.get(`student${i}`);
@@ -218,17 +214,13 @@
       }
     }
 
-    // تحقق من عدد الأسماء المدخلة
     if (studentsArray.length < 2) {
-      // عرض رسالة الخطأ بدلاً من alert
       document.getElementById('errorDialog').style.display = 'flex';
       return;
     }
 
-    // تحويل مصفوفة الأسماء إلى سلسلة نصية مفصولة بفواصل
     const studentsString = studentsArray.join(', ');
 
-    // إضافة نوع الدراسة إلى البيانات المرسلة
     formData.append('studyType', formData.get('studyType'));
     formData.append('students', studentsString);
 
@@ -239,9 +231,10 @@
     .then(response => response.text())
     .then(result => {
       if (result.includes("موجود بالفعل")) {
-        alert(result); // عرض رسالة إذا كان الاسم موجودًا
+        alert(result);
       } else {
         alert('تم إضافة البيانات بنجاح');
+        location.reload(); // إعادة تحميل الصفحة بعد النجاح
       }
       closeConfirmation();
     })
