@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة إدارة الطلاب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f4f8;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #343a40;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: right;
+            border-bottom: 1px solid #dee2e6;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .delete-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+        .group-title {
+            font-weight: bold;
+            background-color: #e9ecef;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>إدارة الطلاب</h2>
+        <div id="studentsContainer">
+            <!-- سيتم إضافة أسماء الطلبة هنا -->
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+        import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxyEkQKOcbTdhxwwHgztePeSAItz8u2oM",
+            authDomain: "pppp444-47d47.firebaseapp.com",
+            databaseURL: "https://pppp444-47d47-default-rtdb.firebaseio.com",
+            projectId: "pppp444-47d47",
+            storageBucket: "pppp444-47d47.appspot.com",
+            messagingSenderId: "898361586861",
+            appId: "1:898361586861:web:5839db87917b23e60d0224",
+            measurementId: "G-R19K8R4LV0"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Fetch students from Firebase
+        const studentsRef = ref(database, 'students/');
+        onValue(studentsRef, (snapshot) => {
+            const data = snapshot.val();
+            const studentsContainer = document.getElementById('studentsContainer');
+            studentsContainer.innerHTML = ''; // Clear existing content
+
+            let groupCounter = 1; // عداد المجموعات
+            for (const key in data) {
+                const student = data[key];
+                const studyType = 'مجموعة بحث'; // تعديل هنا
+
+                // Create a title for the group
+                const groupTitle = document.createElement('div');
+                groupTitle.className = 'group-title';
+                groupTitle.textContent = studyType;
+                studentsContainer.appendChild(groupTitle);
+
+                // Loop through the names of the student
+                student.names.forEach(name => {
+                    const row = document.createElement('div');
+                    row.textContent = name;
+                    studentsContainer.appendChild(row);
+                });
+
+                // Add delete button for the entire group
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'حذف العملية';
+                deleteButton.className = 'delete-button';
+                deleteButton.onclick = () => {
+                    remove(ref(database, 'students/' + key)).then(() => {
+                        alert('تم حذف عملية الإدخال بنجاح!');
+                    }).catch((error) => {
+                        console.error('Error removing student group: ', error);
+                    });
+                };
+                studentsContainer.appendChild(deleteButton);
+
+                groupCounter++; // Increment the group counter
+            }
+        });
+    </script>
+</body>
+</html>
