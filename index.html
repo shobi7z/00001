@@ -73,6 +73,7 @@
       transform: scale(1.02);
     }
 
+    /* تصميم رسالة التأكيد */
     #confirmationDialog, #errorDialog {
       display: none;
       position: fixed;
@@ -143,6 +144,15 @@
     #errorDialog .dialog button:hover {
       background-color: #c82333;
     }
+
+    /* تصميم رسالة النجاح */
+    .success-message {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      color: #28a745;
+      margin-top: 50px;
+    }
   </style>
 </head>
 <body>
@@ -174,6 +184,7 @@
   </form>
 </div>
 
+<!-- رسالة التأكيد -->
 <div id="confirmationDialog">
   <div class="dialog">
     <p>ملاحظة: لا يمكنك تغيير هذه المجموعة. هل أنت متأكد من الإرسال؟</p>
@@ -182,6 +193,7 @@
   </div>
 </div>
 
+<!-- رسالة الخطأ -->
 <div id="errorDialog">
   <div class="dialog">
     <p>يجب إدخال اسمين على الأقل.</p>
@@ -206,6 +218,7 @@
     const form = document.getElementById("form");
     const formData = new FormData(form);
     
+    // جمع أسماء الطلبة في مصفوفة
     let studentsArray = [];
     for (let i = 1; i <= 10; i++) {
       const studentName = formData.get(`student${i}`);
@@ -214,13 +227,17 @@
       }
     }
 
+    // تحقق من عدد الأسماء المدخلة
     if (studentsArray.length < 2) {
+      // عرض رسالة الخطأ
       document.getElementById('errorDialog').style.display = 'flex';
       return;
     }
 
+    // تحويل مصفوفة الأسماء إلى سلسلة نصية مفصولة بفواصل
     const studentsString = studentsArray.join(', ');
 
+    // إضافة نوع الدراسة إلى البيانات المرسلة
     formData.append('studyType', formData.get('studyType'));
     formData.append('students', studentsString);
 
@@ -231,15 +248,14 @@
     .then(response => response.text())
     .then(result => {
       if (result.includes("موجود بالفعل")) {
-        alert(result);
+        alert(result); // عرض رسالة إذا كان الاسم موجودًا
       } else {
-        alert('تم إضافة البيانات بنجاح');
-        location.reload(); // إعادة تحميل الصفحة بعد النجاح
+        // استبدال محتوى الصفحة لعرض رسالة النجاح
+        document.body.innerHTML = '<div class="success-message">تم تسجيلك بنجاح</div>';
       }
-      closeConfirmation();
     })
     .catch(error => {
-      console.error('حدث خطأ:', error);
+      alert("حدث خطأ أثناء إرسال البيانات. حاول مرة أخرى.");
     });
   }
 </script>
