@@ -104,8 +104,11 @@
                 return;
             }
 
+            // حساب الوزن الحجمي
             const volumetricWeight = actualWeight * 1.8;
-            let finalPrice = Math.ceil(volumetricWeight * 5500 / 1000) * 1000;
+
+            // ضرب الوزن الحجمي في 5500 دينار عراقي للحصول على السعر النهائي
+            const finalPrice = volumetricWeight * 5500;
 
             document.getElementById("result").style.display = "block";
             document.getElementById("volumetricWeight").textContent = `الوزن الحجمي: ${volumetricWeight.toFixed(2)} كجم`;
